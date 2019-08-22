@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssc.showinfo.dao.mapper.BookMapper">
+
+    <resultMap id="baseResultMap" type="com.ssc.showinfo.dao.entity.BookInfo">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="book_name" jdbcType="VARCHAR" property="bookName"/>
+        <result column="img_url" jdbcType="VARCHAR" property="imgUrl"/>
+        <result column="publish_info" jdbcType="VARCHAR" property="publishInfo"/>
+        <result column="content" jdbcType="VARCHAR" property="content"/>
+        <result column="created" jdbcType="TIMESTAMP" property="created"></result>
+        <result column="updated" jdbcType="TIMESTAMP" property="updated"></result>
+    </resultMap>
+
+    <sql id="base_column_list">
+        id,book_name,img_url,publish_info,content,created,updated
+    </sql>
+
+
+</mapper>
