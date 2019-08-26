@@ -16,5 +16,4 @@
         id,book_name,img_url,publish_info,content,created,updated
     </sql>
 
-
 </mapper>
