@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * @program: show-info
  * @description: 获取NBA球队以及球员的信息接口
@@ -101,7 +103,7 @@ public class NBAController {
      * @param rows
      * @return
      */
-    @GetMapping("queryPlayerList")
+    @GetMapping("queryTeamList")
     public ResponseEntity queryTeamList(@RequestParam(value = "page", defaultValue = "1") Integer page,
                                           @RequestParam(value = "rows",defaultValue = "10") Integer rows){
         if(logger.isInfoEnabled()){
@@ -112,6 +114,25 @@ public class NBAController {
             return ResponseEntity.ok(pageInfo);
         }catch(Exception e){
             logger.error("调用queryTeamList接口失败！", e);
+        }
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+    }
+
+    /**
+     * 查询所有球队的数据信息
+     *
+     * @return
+     */
+    @GetMapping("queryAllTeam")
+    public ResponseEntity queryAllTeam(){
+        if(logger.isInfoEnabled()){
+            logger.info("调用queryAllTeam接口查询信息");
+        }
+        try{
+            List<NBATeamInfo> teamList = nbaTeamService.queryAll();
+            return ResponseEntity.ok(teamList);
+        }catch(Exception e){
+            logger.error("调用queryAllTeam接口失败！",e);
         }
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
     }
