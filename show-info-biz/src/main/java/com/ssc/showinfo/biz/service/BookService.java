@@ -1,5 +1,7 @@
 package com.ssc.showinfo.biz.service;
 
+import com.ssc.showinfo.common.redis.CacheTime;
+import com.ssc.showinfo.common.redis.RedisClient;
 import com.ssc.showinfo.dao.entity.BookInfo;
 import com.ssc.showinfo.dao.mapper.BookMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +20,18 @@ public class BookService extends BaseService<BookInfo>{
     @Autowired
     private BookMapper bookMapper;
 
+    @Autowired
+    private RedisClient redisClient;
+
     public String test(){
-        return bookMapper.selectByPrimaryKey(1).toString();
+        String key = "showinfo:book:test";
+        if(redisClient.get(key) == null){
+            String testStr = bookMapper.selectByPrimaryKey(1).toString();
+            redisClient.set(key,testStr, CacheTime.CACHE_EXP_MIUNTE);
+            return testStr;
+        }else{
+            return redisClient.get(key);
+        }
     }
 
     @Override
