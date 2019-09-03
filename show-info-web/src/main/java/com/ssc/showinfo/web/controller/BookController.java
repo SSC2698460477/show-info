@@ -72,7 +72,9 @@ public class BookController {
             logger.info("开始调用queryBookInfoById接口，id={}", id);
         }
         try {
-            BookInfo bookInfo = bookService.queryById(id);
+            BookInfo record = new BookInfo();
+            record.setId(id);
+            BookInfo bookInfo = bookService.queryOne(record);
             BookShortComment bookShortComment = new BookShortComment();
             bookShortComment.setId(0);
             bookShortComment.setBookId(id);
