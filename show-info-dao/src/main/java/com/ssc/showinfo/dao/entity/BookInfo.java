@@ -1,8 +1,6 @@
 package com.ssc.showinfo.dao.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * @program: show-info
@@ -14,7 +12,8 @@ import javax.persistence.Table;
 public class BookInfo extends BaseEntity{
 
     @Id
-    private int id; // 主键id
+    @Column(name = "id")
+    private Integer id; // 主键id
 
     @Column(name = "book_name")
     private String bookName; // 书名
@@ -28,11 +27,11 @@ public class BookInfo extends BaseEntity{
     @Column(name = "content")
     private String content; // 书籍简介
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

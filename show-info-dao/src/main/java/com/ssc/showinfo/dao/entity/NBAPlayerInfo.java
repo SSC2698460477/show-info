@@ -1,8 +1,6 @@
 package com.ssc.showinfo.dao.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * @program: show-info
@@ -14,7 +12,8 @@ import javax.persistence.Table;
 public class NBAPlayerInfo extends BaseEntity{
 
     @Id
-    private int id;
+    @Column(name = "id")
+    private Integer id;
 
     @Column(name = "armLength")
     private String armLength;
@@ -73,11 +72,11 @@ public class NBAPlayerInfo extends BaseEntity{
     @Column(name = "weight")
     private String weight;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

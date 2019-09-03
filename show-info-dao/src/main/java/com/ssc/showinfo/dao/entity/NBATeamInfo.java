@@ -1,7 +1,6 @@
 package com.ssc.showinfo.dao.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * @program: show-info
@@ -12,8 +11,9 @@ import javax.persistence.Table;
 @Table(name = "tb_nba_team")
 public class NBATeamInfo extends BaseEntity{
 
+    @Id
     @Column(name = "id")
-    private int id;
+    private Integer id;
 
     @Column(name = "boss")
     private String boss;
@@ -63,11 +63,14 @@ public class NBATeamInfo extends BaseEntity{
     @Column(name = "teamId")
     private String teamId;
 
-    public int getId() {
+    @Column(name = "venue")
+    private String venue;
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -197,5 +200,13 @@ public class NBATeamInfo extends BaseEntity{
 
     public void setTeamId(String teamId) {
         this.teamId = teamId;
+    }
+
+    public String getVenue() {
+        return venue;
+    }
+
+    public void setVenue(String venue) {
+        this.venue = venue;
     }
 }
