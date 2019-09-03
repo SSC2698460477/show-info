@@ -33,19 +33,21 @@ public class NBAController {
     private NBATeamService nbaTeamService;
 
     /**
-     * 根据id 查询NBA球员的信息
+     * 根据id查询NBA球员的信息
      *
      * @param id
      * @return
      */
-    @GetMapping("queryPlayerById/{id}")
-    public ResponseEntity queryPlayerById(@PathVariable("id") Integer id){
+    @GetMapping("queryPlayerById")
+    public ResponseEntity queryPlayerById(@RequestParam("id") Integer id){
 
         if(logger.isInfoEnabled()){
             logger.info("进入根据id查询NBA球员信息的接口 id={}", id);
         }
         try{
-            NBAPlayerInfo nbaPlayerInfo = nbaPlayerService.queryById(id);
+            NBAPlayerInfo record = new NBAPlayerInfo();
+            record.setId(id);
+            NBAPlayerInfo nbaPlayerInfo = nbaPlayerService.queryOne(record);
             return ResponseEntity.ok(nbaPlayerInfo);
         }catch(Exception e){
             logger.error("调用queryPlayerById接口失败！", e);
@@ -78,17 +80,19 @@ public class NBAController {
     /**
      * 根据id 查询NBA球队的信息
      *
-     * @param id
+     * @param teamId
      * @return
      */
-    @GetMapping("queryTeamById/{id}")
-    public ResponseEntity queryTeamById(@PathVariable("id") Integer id){
+    @GetMapping("queryTeamById/{teamId}")
+    public ResponseEntity queryTeamById(@PathVariable("teamId") String teamId){
 
         if(logger.isInfoEnabled()){
-            logger.info("进入根据id查询NBA球员信息的接口 id={}", id);
+            logger.info("进入根据id查询NBA球员信息的接口 id={}", teamId);
         }
         try{
-            NBATeamInfo nbaTeamInfo = nbaTeamService.queryById(id);
+            NBATeamInfo record = new NBATeamInfo();
+            record.setTeamId(teamId);
+            NBATeamInfo nbaTeamInfo = nbaTeamService.queryOne(record);
             return ResponseEntity.ok(nbaTeamInfo);
         }catch(Exception e){
             logger.error("调用queryTeamById接口失败！", e);
@@ -133,6 +137,29 @@ public class NBAController {
             return ResponseEntity.ok(teamList);
         }catch(Exception e){
             logger.error("调用queryAllTeam接口失败！",e);
+        }
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+    }
+
+    /**
+     * 根据TeamId查询球员的列表
+     *
+     * @param teamId
+     * @return
+     */
+    @GetMapping("queryPlayersByTeamId")
+    public ResponseEntity queryPlayersByTeamId(@RequestParam("teamId") String teamId){
+
+        if(logger.isInfoEnabled()){
+            logger.info("调用queryAllTeam接口查询信息");
+        }
+        try {
+            NBAPlayerInfo record = new NBAPlayerInfo();
+            record.setTeamId(teamId);
+            List<NBAPlayerInfo> list = nbaPlayerService.queryListByWhere(record);
+            return ResponseEntity.ok(list);
+        }catch (Exception e){
+            logger.error("调用queryPlayersByTeamId接口失败！",e);
         }
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
     }
