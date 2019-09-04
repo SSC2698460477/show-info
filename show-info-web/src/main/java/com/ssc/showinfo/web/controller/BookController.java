@@ -89,4 +89,32 @@ public class BookController {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
     }
 
+    /**
+     * 增加短评
+     *
+     * @param shortComment
+     * @return
+     */
+    @PostMapping(value = "addShortComment",consumes = "application/json;charset=utf-8")
+    public ResponseEntity addShortComment(@RequestBody BookShortComment shortComment){
+        if(logger.isInfoEnabled()){
+            logger.info("开始调用addShortComment接口，bookId={} comment={}", shortComment.getBookId(), shortComment.getShortComment());
+        }
+        try{
+            Integer result = bookShortCommentService.save(shortComment);
+            if(result <= 0){
+                if(logger.isInfoEnabled()){
+                    logger.info("新增短评失败！");
+                }
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            }
+            if(logger.isInfoEnabled()){
+                logger.info("新增短评成功！");
+            }
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        }catch (Exception e){
+            logger.error("调用addShortComment接口出错", e);
+        }
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    }
 }
