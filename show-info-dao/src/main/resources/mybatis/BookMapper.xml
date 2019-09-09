@@ -6,7 +6,7 @@
         <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="book_name" jdbcType="VARCHAR" property="bookName"/>
         <result column="img_url" jdbcType="VARCHAR" property="imgUrl"/>
-        <result column="publish_info" jdbcType="VARCHAR" property="publishInfo"/>
+        <result column="publish_info" jdbcType="VARCHAR" property="pubInfo"/>
         <result column="content" jdbcType="VARCHAR" property="content"/>
         <result column="created" jdbcType="TIMESTAMP" property="created"></result>
         <result column="updated" jdbcType="TIMESTAMP" property="updated"></result>
@@ -15,5 +15,27 @@
     <sql id="base_column_list">
         id,book_name,img_url,publish_info,content,created,updated
     </sql>
+
+    <!--模糊的分页查询-->
+    <select id="queryPageListByRecord" resultMap="baseResultMap">
+        SELECT
+        <include refid="base_column_list" />
+        FROM tb_book_info WHERE 1=0
+        <if test="bookInfo.bookName != null">
+          OR book_name LIKE CONCAT('%',#{bookInfo.bookName},'%')
+        </if>
+        <if test="bookInfo.pubInfo != null">
+          OR publish_info LIKE CONCAT('%',#{bookInfo.pubInfo},'%')
+        </if>
+        <if test="bookInfo.content != null">
+          OR content LIKE CONCAT('%',#{bookInfo.content},'%')
+        </if>
+        ORDER BY id LIMIT #{start},#{rows}
+    </select>
+
+    <!--查询总条数-->
+    <select id="queryBookCount" resultType="java.lang.Integer">
+        SELECT COUNT(id) FROM tb_book_info
+    </select>
 
 </mapper>

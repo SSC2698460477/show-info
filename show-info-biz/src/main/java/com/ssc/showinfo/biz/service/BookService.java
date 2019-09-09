@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.common.Mapper;
 
+import java.util.List;
+
 /**
  * @program: show-info
  * @description: 操作书籍信息的service类
@@ -34,8 +36,18 @@ public class BookService extends BaseService<BookInfo>{
         }
     }
 
+    public List<BookInfo> queryPageListByRecord(BookInfo record, Integer page, Integer rows) {
+        return bookMapper.queryPageListByRecord(record,page,rows);
+    }
+
+    public Integer queryBookCount() {
+        return bookMapper.queryBookCount();
+    }
+
     @Override
     public Mapper<BookInfo> getMapper() {
         return bookMapper;
     }
+
+
 }

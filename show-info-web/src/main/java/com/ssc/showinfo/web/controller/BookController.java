@@ -32,6 +32,7 @@ public class BookController {
 
     @Autowired
     private BookShortCommentService bookShortCommentService;
+    private BookInfo record;
 
     @GetMapping("test")
     public String test() {
@@ -116,5 +117,39 @@ public class BookController {
             logger.error("调用addShortComment接口出错", e);
         }
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    }
+
+    /**
+     * 模糊搜索 分页查询书籍信息
+     *
+     * @param strat
+     * @param rows
+     * @param q
+     * @return
+     */
+    @GetMapping("searchBooks")
+    public ResponseEntity searchBooks(@RequestParam(value = "start",defaultValue = "0") Integer strat,
+                                      @RequestParam(value = "rows",defaultValue = "20") Integer rows,
+                                      @RequestParam(value="q") String q){
+        if (logger.isInfoEnabled()) {
+            logger.info("开始调用searchBooks接口，strat= {}，rows={},q={}", strat, rows,q);
+        }
+        try {
+            BookInfo record = new BookInfo();
+            record.setBookName(q);
+            record.setPubInfo(q);
+            record.setContent(q);
+            Integer count = bookService.queryBookCount();
+            List<BookInfo> list = bookService.queryPageListByRecord(record,strat,rows);
+            PageInfo<BookInfo> pageInfo = new PageInfo<BookInfo>();
+            pageInfo.setList(list);
+            pageInfo.setPageSize(rows);
+            pageInfo.setStartRow(strat);
+            pageInfo.setTotal(count);
+            return ResponseEntity.ok(pageInfo);
+        }catch(Exception e){
+            logger.error("调用searchBooks接口出错",e);
+        }
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
     }
 }

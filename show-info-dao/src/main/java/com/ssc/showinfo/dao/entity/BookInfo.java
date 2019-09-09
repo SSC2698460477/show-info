@@ -22,7 +22,7 @@ public class BookInfo extends BaseEntity{
     private String imgUrl; // 封面url
 
     @Column(name = "publish_info")
-    private String publishInfo; // 出版信息
+    private String pubInfo; // 出版信息
 
     @Column(name = "content")
     private String content; // 书籍简介
@@ -52,11 +52,11 @@ public class BookInfo extends BaseEntity{
     }
 
     public String getPubInfo() {
-        return publishInfo;
+        return pubInfo;
     }
 
-    public void setPubInfo(String publishInfo) {
-        this.publishInfo = publishInfo;
+    public void setPubInfo(String pubInfo) {
+        this.pubInfo = pubInfo;
     }
 
     public String getContent() {
