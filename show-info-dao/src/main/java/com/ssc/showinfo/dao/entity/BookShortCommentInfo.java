@@ -9,7 +9,7 @@ import javax.persistence.*;
  * @create: 2019/9/2 15:03
  **/
 @Table(name = "tb_book_short_comment")
-public class BookShortComment extends BaseEntity{
+public class BookShortCommentInfo extends BaseEntity{
 
     @Id
     @Column(name = "id")

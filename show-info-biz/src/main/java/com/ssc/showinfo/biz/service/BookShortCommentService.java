@@ -1,6 +1,6 @@
 package com.ssc.showinfo.biz.service;
 
-import com.ssc.showinfo.dao.entity.BookShortComment;
+import com.ssc.showinfo.dao.entity.BookShortCommentInfo;
 import com.ssc.showinfo.dao.mapper.BookShortCommentMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,7 +15,7 @@ import java.util.List;
  * @create: 2019/9/2 15:41
  **/
 @Service
-public class BookShortCommentService extends BaseService<BookShortComment>{
+public class BookShortCommentService extends BaseService<BookShortCommentInfo>{
 
     @Autowired
     private BookShortCommentMapper bookShortCommentMapper;
@@ -23,15 +23,15 @@ public class BookShortCommentService extends BaseService<BookShortComment>{
     /**
      * 根据书籍id查询评论的信息列表
      *
-     * @param bookShortComment
+     * @param bookShortCommentInfo
      * @return
      */
-    public List<BookShortComment> queryListByRecord(BookShortComment bookShortComment){
-        return bookShortCommentMapper.queryListByRecoed(bookShortComment);
+    public List<BookShortCommentInfo> queryListByRecord(BookShortCommentInfo bookShortCommentInfo){
+        return bookShortCommentMapper.queryListByRecoed(bookShortCommentInfo);
     }
 
     @Override
-    public Mapper<BookShortComment> getMapper() {
+    public Mapper<BookShortCommentInfo> getMapper() {
         return bookShortCommentMapper;
     }
 }

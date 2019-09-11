@@ -1,7 +1,7 @@
 package com.ssc.showinfo.dao.mapper;
 
 import com.ssc.showinfo.dao.BaseMapper;
-import com.ssc.showinfo.dao.entity.BookShortComment;
+import com.ssc.showinfo.dao.entity.BookShortCommentInfo;
 
 import java.util.List;
 
@@ -11,8 +11,8 @@ import java.util.List;
  * @author: ssc
  * @create: 2019/9/2 15:36
  **/
-public interface BookShortCommentMapper extends BaseMapper<BookShortComment>{
+public interface BookShortCommentMapper extends BaseMapper<BookShortCommentInfo>{
 
-    public List<BookShortComment> queryListByRecoed(BookShortComment bookShortComment);
+    public List<BookShortCommentInfo> queryListByRecoed(BookShortCommentInfo bookShortCommentInfo);
 
 }

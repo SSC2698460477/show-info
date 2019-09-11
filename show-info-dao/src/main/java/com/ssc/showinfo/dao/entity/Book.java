@@ -12,7 +12,7 @@ public class Book {
 
     private BookInfo bookInfo; // 书籍的信息
 
-    private List<BookShortComment> bookShortComments; // 短评的集合
+    private List<BookShortCommentInfo> bookShortCommentInfos; // 短评的集合
 
     public BookInfo getBookInfo() {
         return bookInfo;
@@ -22,11 +22,11 @@ public class Book {
         this.bookInfo = bookInfo;
     }
 
-    public List<BookShortComment> getBookShortComments() {
-        return bookShortComments;
+    public List<BookShortCommentInfo> getBookShortCommentInfos() {
+        return bookShortCommentInfos;
     }
 
-    public void setBookShortComments(List<BookShortComment> bookShortComments) {
-        this.bookShortComments = bookShortComments;
+    public void setBookShortCommentInfos(List<BookShortCommentInfo> bookShortCommentInfos) {
+        this.bookShortCommentInfos = bookShortCommentInfos;
     }
 }

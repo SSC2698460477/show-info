@@ -5,7 +5,7 @@ import com.ssc.showinfo.biz.service.BookService;
 import com.ssc.showinfo.biz.service.BookShortCommentService;
 import com.ssc.showinfo.dao.entity.Book;
 import com.ssc.showinfo.dao.entity.BookInfo;
-import com.ssc.showinfo.dao.entity.BookShortComment;
+import com.ssc.showinfo.dao.entity.BookShortCommentInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,13 +76,13 @@ public class BookController {
             BookInfo record = new BookInfo();
             record.setId(id);
             BookInfo bookInfo = bookService.queryOne(record);
-            BookShortComment bookShortComment = new BookShortComment();
-            bookShortComment.setId(0);
-            bookShortComment.setBookId(id);
-            List<BookShortComment> list = bookShortCommentService.queryListByRecord(bookShortComment);
+            BookShortCommentInfo bookShortCommentInfo = new BookShortCommentInfo();
+            bookShortCommentInfo.setId(0);
+            bookShortCommentInfo.setBookId(id);
+            List<BookShortCommentInfo> list = bookShortCommentService.queryListByRecord(bookShortCommentInfo);
             Book book = new Book();
             book.setBookInfo(bookInfo);
-            book.setBookShortComments(list);
+            book.setBookShortCommentInfos(list);
             return ResponseEntity.ok(book);
         } catch (Exception e) {
             logger.error("调用queryBookInfoById接口失败！", e);
@@ -97,7 +97,7 @@ public class BookController {
      * @return
      */
     @PostMapping(value = "addShortComment",consumes = "application/json;charset=utf-8")
-    public ResponseEntity addShortComment(@RequestBody BookShortComment shortComment){
+    public ResponseEntity addShortComment(@RequestBody BookShortCommentInfo shortComment){
         if(logger.isInfoEnabled()){
             logger.info("开始调用addShortComment接口，bookId={} comment={}", shortComment.getBookId(), shortComment.getShortComment());
         }
