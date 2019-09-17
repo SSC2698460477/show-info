@@ -40,8 +40,8 @@ public class BookService extends BaseService<BookInfo>{
         return bookMapper.queryPageListByRecord(record,page,rows);
     }
 
-    public Integer queryBookCount() {
-        return bookMapper.queryBookCount();
+    public Integer queryBookCount(BookInfo record) {
+        return bookMapper.queryBookCount(record);
     }
 
     @Override

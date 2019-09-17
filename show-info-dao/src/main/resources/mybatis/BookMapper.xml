@@ -27,15 +27,21 @@
         <if test="bookInfo.pubInfo != null">
           OR publish_info LIKE CONCAT('%',#{bookInfo.pubInfo},'%')
         </if>
-        <if test="bookInfo.content != null">
-          OR content LIKE CONCAT('%',#{bookInfo.content},'%')
-        </if>
+        <!--<if test="bookInfo.content != null">-->
+          <!--OR content LIKE CONCAT('%',#{bookInfo.content},'%')-->
+        <!--</if>-->
         ORDER BY id LIMIT #{start},#{rows}
     </select>
 
     <!--查询总条数-->
     <select id="queryBookCount" resultType="java.lang.Integer">
-        SELECT COUNT(id) FROM tb_book_info
+        SELECT COUNT(id) FROM tb_book_info WHERE 1=0
+        <if test="bookInfo.bookName != null">
+            OR book_name LIKE CONCAT('%',#{bookInfo.bookName},'%')
+        </if>
+        <if test="bookInfo.pubInfo != null">
+            OR publish_info LIKE CONCAT('%',#{bookInfo.pubInfo},'%')
+        </if>
     </select>
 
 </mapper>

@@ -138,8 +138,8 @@ public class BookController {
             BookInfo record = new BookInfo();
             record.setBookName(q);
             record.setPubInfo(q);
-            record.setContent(q);
-            Integer count = bookService.queryBookCount();
+//            record.setContent(q);
+            Integer count = bookService.queryBookCount(record);
             List<BookInfo> list = bookService.queryPageListByRecord(record,strat,rows);
             PageInfo<BookInfo> pageInfo = new PageInfo<BookInfo>();
             pageInfo.setList(list);

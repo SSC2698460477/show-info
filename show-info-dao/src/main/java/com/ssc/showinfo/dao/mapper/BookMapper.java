@@ -16,5 +16,5 @@ public interface BookMapper extends BaseMapper<BookInfo>{
 
     List<BookInfo> queryPageListByRecord(@Param("bookInfo") BookInfo bookInfo, @Param("start") Integer start, @Param("rows") Integer rows);
 
-    Integer queryBookCount();
+    Integer queryBookCount(@Param("bookInfo") BookInfo bookInfo);
 }
