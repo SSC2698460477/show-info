@@ -29,6 +29,17 @@ public class UserInfo extends BaseEntity{
     @Column(name = "email")
     private String email;
 
+    @Column(name = "state")
+    private String state; // 用户状态 1 有效 0 失效
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
     public Integer getId() {
         return id;
     }

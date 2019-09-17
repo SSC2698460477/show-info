@@ -8,12 +8,13 @@
         <result column="password" jdbcType="VARCHAR" property="password"/>
         <result column="phone" jdbcType="VARCHAR" property="phone"/>
         <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="state" jdbcType="VARCHAR" property="state"/>
         <result column="created" jdbcType="TIMESTAMP" property="created"></result>
         <result column="updated" jdbcType="TIMESTAMP" property="updated"></result>
     </resultMap>
 
     <sql id="base_column_list">
-        id,username,password,phone,email,created,updated
+        id,username,password,phone,email,state,created,updated
     </sql>
 
     <!--自定义的SQL语句-->
