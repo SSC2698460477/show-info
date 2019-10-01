@@ -1,7 +1,7 @@
 package com.ssc.showinfo.biz.service;
 
 import com.ssc.showinfo.dao.entity.UserInfo;
-import com.ssc.showinfo.dao.mapper.LoginMapper;
+import com.ssc.showinfo.dao.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.common.Mapper;
@@ -13,13 +13,13 @@ import tk.mybatis.mapper.common.Mapper;
  * @create: 2019/9/10 16:24
  **/
 @Service
-public class LoginService extends BaseService<UserInfo> {
+public class UserService extends BaseService<UserInfo> {
 
     @Autowired
-    private LoginMapper loginMapper;
+    private UserMapper userMapper;
 
     @Override
     public Mapper<UserInfo> getMapper() {
-        return loginMapper;
+        return userMapper;
     }
 }
