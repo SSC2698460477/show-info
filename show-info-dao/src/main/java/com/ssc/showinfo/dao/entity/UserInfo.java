@@ -10,7 +10,7 @@ import javax.persistence.Table;
  * @author: ssc
  * @create: 2019/9/10 15:53
  **/
-@Table(name = "tb_user")
+@Table(name = "tb_sys_user")
 public class UserInfo extends BaseEntity{
 
     @Id
