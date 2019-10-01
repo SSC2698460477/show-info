@@ -60,24 +60,17 @@ public class UserController {
             BaseResponse<UserInfo> result = new BaseResponse<UserInfo>();
             record.setEmail(userInfo.getEmail());
             record.setPassword(userInfo.getPassword());
-            UserInfo user = userService.queryOne(record);
-            if(user == null){
-                // 登录失败
-                result.setSuccess(false);
-                result.setMsg("登录失败，用户不存在！");
-                result.setData(null);
-                resultMap.put("result",result);
-                resultMap.put("token","");
-            }else{
-                // 登录成功
-                String token = tokenService.getToken(user);
-                result.setSuccess(true);
-                result.setMsg("登录成功！");
-                result.setData(user);
-                resultMap.put("result",result);
-                resultMap.put("token",token);
-            }
-            return ResponseEntity.ok().body(resultMap);
+            UserInfo user = userService.checkLoginUser(record);
+           if(user != null) {
+               // 登录成功
+               String token = tokenService.getToken(user);
+               result.setSuccess(true);
+               result.setMsg("登录成功！");
+               result.setData(user);
+               resultMap.put("result", result);
+               resultMap.put("token", token);
+               return ResponseEntity.ok().body(resultMap);
+           }
         }catch (Exception e){
             logger.error("调用login接口出错",e);
         }

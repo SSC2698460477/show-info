@@ -18,5 +18,11 @@
     </sql>
 
     <!--自定义的SQL语句-->
+    <select id="checkLoginUser" resultMap="baseResultMap">
+        SELECT
+        <include refid="base_column_list"/>
+        FROM tb_sys_user WHERE
+        email = #{email} AND password = #{password}
+    </select>
 
 </mapper>

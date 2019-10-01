@@ -11,4 +11,5 @@ import com.ssc.showinfo.dao.entity.UserInfo;
  **/
 public interface UserMapper extends BaseMapper<UserInfo>{
 
+    UserInfo checkLoginUser(UserInfo record);
 }

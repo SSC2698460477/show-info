@@ -18,6 +18,10 @@ public class UserService extends BaseService<UserInfo> {
     @Autowired
     private UserMapper userMapper;
 
+    public UserInfo checkLoginUser(UserInfo record){
+        return userMapper.checkLoginUser(record);
+    }
+
     @Override
     public Mapper<UserInfo> getMapper() {
         return userMapper;
