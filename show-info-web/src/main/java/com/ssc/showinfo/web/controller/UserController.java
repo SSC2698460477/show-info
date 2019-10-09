@@ -1,13 +1,13 @@
 package com.ssc.showinfo.web.controller;
 
 import com.ssc.showinfo.biz.service.RoleService;
-import com.ssc.showinfo.biz.service.TokenService;
 import com.ssc.showinfo.biz.service.UserService;
-import com.ssc.showinfo.common.jwt.annotation.PassToken;
-import com.ssc.showinfo.common.jwt.annotation.UserLoginToken;
+import com.ssc.showinfo.common.annotation.JwtIgnore;
 import com.ssc.showinfo.common.util.BaseResponse;
+import com.ssc.showinfo.web.util.JwtTokenUtil;
 import com.ssc.showinfo.dao.entity.RoleInfo;
 import com.ssc.showinfo.dao.entity.UserInfo;
+import com.ssc.showinfo.web.entity.Audience;
 import com.ssc.showinfo.web.entity.LoginUser;
 import com.ssc.showinfo.web.entity.RegisterUser;
 import org.slf4j.Logger;
@@ -39,7 +39,7 @@ public class UserController {
     private RoleService roleService;
 
     @Autowired
-    private TokenService tokenService;
+    private Audience audience;
 
     /**
      * 登录信息的验证接口
@@ -48,7 +48,7 @@ public class UserController {
      * @return
      */
     @PostMapping
-    @PassToken
+    @JwtIgnore
     @RequestMapping("login")
     public ResponseEntity login(@RequestBody LoginUser userInfo){
         if(logger.isInfoEnabled()){
@@ -63,7 +63,8 @@ public class UserController {
             UserInfo user = userService.checkLoginUser(record);
            if(user != null) {
                // 登录成功
-               String token = tokenService.getToken(user);
+               logger.info("token失效时间是："+audience.getExpiresSecond());
+               String token = JwtTokenUtil.createJWT(user.getId().toString(),user.getUsername(),"",audience);
                result.setSuccess(true);
                result.setMsg("登录成功！");
                result.setData(user);
@@ -78,7 +79,7 @@ public class UserController {
     }
 
     @PostMapping
-    @PassToken
+    @JwtIgnore
     @RequestMapping("register")
     public ResponseEntity register(@RequestBody RegisterUser registerUser){
         if(logger.isInfoEnabled()){
@@ -112,7 +113,6 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 
-    @UserLoginToken
     @GetMapping("getMessage")
     public String getMessage(){
         return "你已通过验证";

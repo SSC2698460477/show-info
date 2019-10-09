@@ -1,15 +1,17 @@
 package com.ssc.showinfo.web.interceptor;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.JWTVerifier;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.JWTDecodeException;
-import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.ssc.showinfo.biz.service.UserService;
-import com.ssc.showinfo.common.jwt.annotation.PassToken;
-import com.ssc.showinfo.common.jwt.annotation.UserLoginToken;
-import com.ssc.showinfo.dao.entity.UserInfo;
+import com.ssc.showinfo.common.annotation.JwtIgnore;
+import com.ssc.showinfo.common.exception.CustomException;
+import com.ssc.showinfo.common.response.ResultCode;
+import com.ssc.showinfo.web.entity.Audience;
+import com.ssc.showinfo.web.util.JwtTokenUtil;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -26,55 +28,50 @@ import java.lang.reflect.Method;
  **/
 public class TokenInterceptor implements HandlerInterceptor{
 
+    private static Logger log = LoggerFactory.getLogger(TokenInterceptor.class);
+
     @Autowired
-    private UserService userService;
+    private Audience audience;
 
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse response, Object handler) {
-        String token = httpServletRequest.getHeader("token");// 从 http 请求头中取出 token
-        // 如果不是映射到方法直接通过
-        if(!(handler instanceof HandlerMethod)){
-            return true;
-        }
+        // 忽略带JwtIgnore注解的请求, 不做后续token认证校验
         HandlerMethod handlerMethod=(HandlerMethod)handler;
         Method method=handlerMethod.getMethod();
         //检查是否有passtoken注释，有则跳过认证
-        if (method.isAnnotationPresent(PassToken.class)) {
-            PassToken passToken = method.getAnnotation(PassToken.class);
-            if (passToken.required()) {
+        if (method.isAnnotationPresent(JwtIgnore.class)) {
+            JwtIgnore jwtIgnore = method.getAnnotation(JwtIgnore.class);
+            if (jwtIgnore.required()) {
                 return true;
             }
         }
-        //检查有没有需要用户权限的注解
-        if (method.isAnnotationPresent(UserLoginToken.class)) {
-            UserLoginToken userLoginToken = method.getAnnotation(UserLoginToken.class);
-            if (userLoginToken.required()) {
-                // 执行认证
-                if (token == null) {
-                    throw new RuntimeException("无token，请重新登录");
-                }
-                // 获取 token 中的 user id
-                String userId;
-                try {
-                    userId = JWT.decode(token).getAudience().get(0);
-                } catch (JWTDecodeException j) {
-                    throw new RuntimeException("401");
-                }
-                UserInfo user = userService.queryById(Integer.parseInt(userId));
-                if (user == null) {
-                    throw new RuntimeException("用户不存在，请重新登录");
-                }
-                // 验证 token
-                JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(user.getPassword())).build();
-                try {
-                    jwtVerifier.verify(token);
-                } catch (JWTVerificationException e) {
-                    throw new RuntimeException("401");
-                }
-                return true;
-            }
+
+        if (HttpMethod.OPTIONS.equals(httpServletRequest.getMethod())) {
+            response.setStatus(HttpServletResponse.SC_OK);
+            return true;
         }
-        return false;
+
+        // 获取请求头信息authorization信息
+        final String authHeader = httpServletRequest.getHeader(JwtTokenUtil.AUTH_HEADER_KEY);
+        log.info("## authHeader= {}", authHeader);
+
+        if (StringUtils.isBlank(authHeader) || !authHeader.startsWith(JwtTokenUtil.TOKEN_PREFIX)) {
+            log.info("### 用户未登录，请先登录 ###");
+            throw new CustomException(ResultCode.USER_NOT_LOGGED_IN);
+        }
+
+        // 获取token
+        String token = authHeader.substring(7);
+        System.out.println("当前token是："+token);
+        if(audience == null){
+            BeanFactory factory = WebApplicationContextUtils.getRequiredWebApplicationContext(httpServletRequest.getServletContext());
+            audience = (Audience) factory.getBean("audience");
+        }
+
+        // 验证token是否有效--无效已做异常抛出，由全局异常处理后返回对应信息
+        JwtTokenUtil.parseJWT(token, audience.getBase64Secret());
+
+        return true;
     }
 
     @Override

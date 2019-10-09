@@ -18,5 +18,9 @@
             <artifactId>show-info-biz</artifactId>
             <version>${show-info-version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
     </dependencies>
 </project>

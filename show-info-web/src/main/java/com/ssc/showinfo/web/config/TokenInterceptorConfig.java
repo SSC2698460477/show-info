@@ -1,8 +1,7 @@
 package com.ssc.showinfo.web.config;
-
 import com.ssc.showinfo.web.interceptor.TokenInterceptor;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -17,11 +16,21 @@ public class TokenInterceptorConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(authenticationInterceptor())
-                .addPathPatterns("/**");    // 拦截所有请求，通过判断是否有 @LoginRequired 注解 决定是否需要登录
+        //拦截路径可自行配置多个 可用 ，分隔开
+        registry.addInterceptor(new TokenInterceptor()).addPathPatterns("/**");
     }
-    @Bean
-    public TokenInterceptor authenticationInterceptor() {
-        return new TokenInterceptor();
+
+    /**
+     * 添加跨域支持
+     *
+     * @param registry
+     */
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOrigins("*")
+                .allowCredentials(true)
+                .allowedMethods("GET", "POST", "DELETE", "PUT", "PATCH", "OPTIONS", "HEAD")
+                .maxAge(3600 * 24);
     }
 }
