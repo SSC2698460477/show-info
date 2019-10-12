@@ -1,4 +1,4 @@
-package com.ssc.showinfo.common;
+package com.ssc.showinfo.common.redis;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;

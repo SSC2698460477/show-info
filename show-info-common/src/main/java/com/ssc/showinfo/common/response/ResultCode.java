@@ -76,6 +76,7 @@ public enum ResultCode {
     int code;
     //提示信息
     String message;
+
     ResultCode(int code, String message){
         this.code = code;
         this.message = message;
