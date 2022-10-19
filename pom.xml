@@ -35,7 +35,7 @@
 		<show-info-version>0.0.1-SNAPSHOT</show-info-version>
 		<mybatis-spring-boot-starter-version>1.3.2</mybatis-spring-boot-starter-version>
 		<lombok-version>1.16.22</lombok-version>
-		<jackson.version>2.9.8</jackson.version>
+		<jackson.version>2.13.4.1</jackson.version>
 		<jwt.version>0.9.0</jwt.version>
         <commons-lang-version>3.4</commons-lang-version>
 	</properties>
